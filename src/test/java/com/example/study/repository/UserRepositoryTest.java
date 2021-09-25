@@ -65,13 +65,13 @@ class UserRepositoryTest extends StudyApplicationTests {
     @Test
     @Transactional
     public void delete() {
-        Optional<User> user = userRepository.findById(3L);
+        Optional<User> user = userRepository.findById(5L);
         Assertions.assertTrue(user.isPresent()); // user.isPresent()이 true여야 테스트 통과
 
         if (user.isPresent()) userRepository.delete(user.get());
 
         // 삭제 후 데이터 확인
-        Optional<User> deleteUser = userRepository.findById(3L);
+        Optional<User> deleteUser = userRepository.findById(5L);
         Assertions.assertFalse(deleteUser.isPresent()); // deleteUser.isPresent()이 false여야 테스트 통과
 
         if (deleteUser.isPresent()) System.out.println("데이터 있음" + deleteUser.get());
