@@ -5,26 +5,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String account;
-    String email;
-    String phoneNumber;
+    private Long id;
 
-    LocalDateTime createAt;
-    String createBy;
-    LocalDateTime updateAt;
-    String updateBy;
+    private String name;
+    private int price;
+    private String content;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     List<OrderDetail> orderDetailList;
 }

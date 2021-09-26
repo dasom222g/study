@@ -3,6 +3,13 @@ package com.example.study.repository;
 import com.example.study.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
 
+public interface UserRepository extends JpaRepository<User, Long> {
+    // 쿼리 메소드
+    // SELECT * FROM User WHERE id = ?
+    Optional<User> findByAccount(String account);
+
+    // SELECT * FROM User WHERE id = ? AND email = ?
+    Optional<User> findByAccountAndEmail(String account, String email);
 }
