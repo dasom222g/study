@@ -1,29 +1,46 @@
 package com.example.study.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class Category {
+public class OrderGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
+    private String status;
 
-    private String title;
+    private String orderType;
+
+    private String revAddress;
+
+    private String revName;
+
+    private String paymentType;
+
+    private BigDecimal totalPrice;
+
+    private int totalQuantity;
+
+    private LocalDateTime orderAt;
+
+    private LocalDateTime arrivalAt;
 
     private LocalDateTime createdAt;
 
-    private String createdBy;
+    private String creatBy;
 
     private LocalDateTime updatedAt;
 

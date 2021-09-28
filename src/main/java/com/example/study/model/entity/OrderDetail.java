@@ -3,29 +3,33 @@ package com.example.study.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-@ToString(exclude = {"user", "item"})
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime orderAt;
-    // 연관관계 설정
-    // N:1
-    @ManyToOne
-    private User user;
+    private String status;
 
-    // N:1
-    @ManyToOne
-    private Item item;
+    private LocalDateTime arrivalDate;
 
+    private int quantity;
+
+    private BigDecimal totalPrice;
+
+    private LocalDateTime createdAt;
+
+    private String creatBy;
+
+    private LocalDateTime updatedAt;
+
+    private String updatedBy;
 }
