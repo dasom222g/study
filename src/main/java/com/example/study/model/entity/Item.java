@@ -37,9 +37,11 @@ public class Item {
 
     private LocalDateTime createdAt;
 
-    private String creatBy;
+    private String createdBy;
 
     private LocalDateTime updatedAt;
 
     private String updatedBy;
+
+    private Long partnerId; // 외래키
 }

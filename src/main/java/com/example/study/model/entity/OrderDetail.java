@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class OrderDetail {
 
     private String status;
 
-    private LocalDateTime arrivalDate;
+    private LocalDate arrivalDate;
 
     private int quantity;
 
@@ -27,9 +28,13 @@ public class OrderDetail {
 
     private LocalDateTime createdAt;
 
-    private String creatBy;
+    private String createdBy;
 
     private LocalDateTime updatedAt;
 
     private String updatedBy;
+
+    private Long orderGroupId; // 외래키
+
+    private Long itemId; // 외래키
 }

@@ -2,6 +2,7 @@ package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.Category;
+import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +21,20 @@ class CategoryRepositoryTest extends StudyApplicationTests {
         String type = "FOOD";
         String title = "음식";
         LocalDateTime createAt = LocalDateTime.now();
-        String createBy = "Admin Server";
+        String createdBy = "Admin Server";
 
         Category category = new Category();
         category.setType(type);
         category.setTitle(title);
         category.setCreatedAt(createAt);
-        category.setCreatedBy(createBy);
+        category.setCreatedBy(createdBy);
 
         Category newCategory = categoryRepository.save(category);
 
         Assertions.assertNotNull(newCategory);
         Assertions.assertEquals(newCategory.getType(), type);
         Assertions.assertEquals(newCategory.getTitle(), title);
-        Assertions.assertEquals(newCategory.getCreatedBy(), createBy);
+        Assertions.assertEquals(newCategory.getCreatedBy(), createdBy);
     }
 
     @Test
@@ -47,6 +48,20 @@ class CategoryRepositoryTest extends StudyApplicationTests {
             System.out.println(detail.getType());
             System.out.println(detail.getTitle());
             System.out.println(detail.getCreatedBy());
+        });
+    }
+
+    @Test
+    public void update() {
+        String type = "Beauty";
+        Optional<Category> findCategory = categoryRepository.findFirstByTypeOrderByIdDesc(type);
+        findCategory.ifPresent(item -> {
+            item.setType("BEAUTY");
+            item.setUpdatedAt(LocalDateTime.now());
+            item.setUpdatedBy("Admin Server");
+
+            Category updateCategory = categoryRepository.save(item);
+            Assertions.assertNotNull(updateCategory);
         });
     }
 }

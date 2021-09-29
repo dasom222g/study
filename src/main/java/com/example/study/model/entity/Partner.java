@@ -39,9 +39,11 @@ public class Partner {
 
     private LocalDateTime createdAt;
 
-    private String creatBy;
+    private String createdBy;
 
     private LocalDateTime updatedAt;
 
     private String updatedBy;
+
+    private Long categoryId; // 외래키
 }

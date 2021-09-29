@@ -2,11 +2,16 @@ package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.OrderDetail;
+import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.Assign;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,5 +21,44 @@ class OrderDetailRepositoryTest extends StudyApplicationTests {
 
     @Test
     public void create() {
+        String status = "WARNING";
+        LocalDate arrivalDate = LocalDate.now().plusDays(2);
+        int quantity = 1;
+        BigDecimal totalPrice = BigDecimal.valueOf(900000);
+
+        LocalDateTime createdAt = LocalDateTime.now();
+        String createdBy = "Admin Server";
+
+        Long itemId = 1L;
+        Long orderGroupId = 1L;
+
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setStatus(status);
+        orderDetail.setArrivalDate(arrivalDate);
+        orderDetail.setQuantity(quantity);
+        orderDetail.setTotalPrice(totalPrice);
+        orderDetail.setCreatedAt(createdAt);
+        orderDetail.setCreatedBy(createdBy);
+        orderDetail.setItemId(itemId);
+        orderDetail.setOrderGroupId(orderGroupId);
+
+        OrderDetail newOrderDetail = orderDetailRepository.save(orderDetail);
+        Assertions.assertNotNull(newOrderDetail);
+    }
+
+    @Test
+    public void update() {
+        LocalDate arrivalDate = LocalDate.now().plusDays(2);
+
+        Optional<OrderDetail> findOrderDetail = orderDetailRepository.findById(1L);
+        findOrderDetail.ifPresent(item -> {
+            System.out.println("값이 있습니다" + item);
+            item.setArrivalDate(arrivalDate);
+            item.setUpdatedAt(LocalDateTime.now());
+            item.setUpdatedBy("Admin Server");
+
+            OrderDetail updatedOrderDetail = orderDetailRepository.save(item);
+            Assertions.assertNotNull(updatedOrderDetail);
+        });
     }
 }

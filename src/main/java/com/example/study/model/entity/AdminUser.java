@@ -40,7 +40,7 @@ public class AdminUser {
 
     private  LocalDateTime createdAt;
 
-    private String creatBy;
+    private String createdBy;
 
     private LocalDateTime updatedAt;
 
