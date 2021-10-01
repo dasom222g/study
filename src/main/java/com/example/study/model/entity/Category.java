@@ -2,16 +2,15 @@ package com.example.study.model.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
+@ToString(exclude = {"partnerList"})
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +27,8 @@ public class Category {
     private LocalDateTime updatedAt;
 
     private String updatedBy;
+
+    // Category 1:N Partner
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    List<Partner> partnerList;
 }

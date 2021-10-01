@@ -45,7 +45,7 @@ class OrderGroupRepositoryTest extends StudyApplicationTests {
         orderGroup.setArrivalDate(arrivalDate);
         orderGroup.setCreatedAt(createdAt);
         orderGroup.setCreatedBy(createdBy);
-        orderGroup.setUserId(userId);
+        // orderGroup.setUserId(userId);
 
         OrderGroup newOrderGroup = orderGroupRepository.save(orderGroup);
         Assertions.assertNotNull(newOrderGroup);

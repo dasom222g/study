@@ -3,6 +3,7 @@ package com.example.study.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
+@ToString(exclude = {"orderDetailList", "partner"})
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,5 +45,11 @@ public class Item {
 
     private String updatedBy;
 
-    private Long partnerId; // 외래키
+    // Item 1:N OrderDetail
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    List<OrderDetail> orderDetailList;
+
+    // Item N:1 Partner
+    @ManyToOne
+    Partner partner;
 }

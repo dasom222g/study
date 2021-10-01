@@ -21,7 +21,7 @@ class OrderDetailRepositoryTest extends StudyApplicationTests {
 
     @Test
     public void create() {
-        String status = "WARNING";
+        String status = "WAITING";
         LocalDate arrivalDate = LocalDate.now().plusDays(2);
         int quantity = 1;
         BigDecimal totalPrice = BigDecimal.valueOf(900000);
@@ -39,8 +39,8 @@ class OrderDetailRepositoryTest extends StudyApplicationTests {
         orderDetail.setTotalPrice(totalPrice);
         orderDetail.setCreatedAt(createdAt);
         orderDetail.setCreatedBy(createdBy);
-        orderDetail.setItemId(itemId);
-        orderDetail.setOrderGroupId(orderGroupId);
+        // orderDetail.setItemId(itemId);
+        // orderDetail.setOrderGroupId(orderGroupId);
 
         OrderDetail newOrderDetail = orderDetailRepository.save(orderDetail);
         Assertions.assertNotNull(newOrderDetail);
@@ -53,7 +53,7 @@ class OrderDetailRepositoryTest extends StudyApplicationTests {
         Optional<OrderDetail> findOrderDetail = orderDetailRepository.findById(1L);
         findOrderDetail.ifPresent(item -> {
             System.out.println("값이 있습니다" + item);
-            item.setArrivalDate(arrivalDate);
+            item.setStatus("WAITING");
             item.setUpdatedAt(LocalDateTime.now());
             item.setUpdatedBy("Admin Server");
 
