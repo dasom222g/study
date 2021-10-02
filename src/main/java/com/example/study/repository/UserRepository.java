@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findFirstByPhoneNumber(String phoneNumber);
     Optional<User> findFirstByPhoneNumberOrderByIdDesc(String phoneNumber);
+    Optional<User> findByAccount(String account);
 }

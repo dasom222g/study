@@ -1,5 +1,6 @@
 package com.example.study.model.entity;
 
+import com.example.study.component.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Entity
-public class AdminUser {
+public class AdminUser extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,12 +38,4 @@ public class AdminUser {
     private LocalDateTime registeredAt;
 
     private LocalDateTime unregisteredAt;
-
-    private  LocalDateTime createdAt;
-
-    private String createdBy;
-
-    private LocalDateTime updatedAt;
-
-    private String updatedBy;
 }

@@ -20,21 +20,20 @@ class CategoryRepositoryTest extends StudyApplicationTests {
     public void create() {
         String type = "FOOD";
         String title = "음식";
-        LocalDateTime createAt = LocalDateTime.now();
-        String createdBy = "Admin Server";
+        // LocalDateTime createAt = LocalDateTime.now();
+        // String createdBy = "Admin Server";
 
         Category category = new Category();
         category.setType(type);
         category.setTitle(title);
-        category.setCreatedAt(createAt);
-        category.setCreatedBy(createdBy);
+        // category.setCreatedAt(createAt);
+        // category.setCreatedBy(createdBy);
 
         Category newCategory = categoryRepository.save(category);
 
         Assertions.assertNotNull(newCategory);
         Assertions.assertEquals(newCategory.getType(), type);
         Assertions.assertEquals(newCategory.getTitle(), title);
-        Assertions.assertEquals(newCategory.getCreatedBy(), createdBy);
     }
 
     @Test
@@ -57,8 +56,8 @@ class CategoryRepositoryTest extends StudyApplicationTests {
         Optional<Category> findCategory = categoryRepository.findFirstByTypeOrderByIdDesc(type);
         findCategory.ifPresent(item -> {
             item.setType("BEAUTY");
-            item.setUpdatedAt(LocalDateTime.now());
-            item.setUpdatedBy("Admin Server");
+            // item.setUpdatedAt(LocalDateTime.now());
+            // item.setUpdatedBy("Admin Server");
 
             Category updateCategory = categoryRepository.save(item);
             Assertions.assertNotNull(updateCategory);

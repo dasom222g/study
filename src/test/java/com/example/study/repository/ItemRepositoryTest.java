@@ -14,17 +14,18 @@ class ItemRepositoryTest extends StudyApplicationTests {
     ItemRepository itemRepository;
 
     @Test
+
     public void create() {
         String status = "REGISTERED";
-        String name = "삼성 노트북";
-        String title = "삼성 노트북 100";
-        String content = "2021년형 노트북 입니다.";
+        String name = "LG 노트북";
+        String title = "LG 노트북 100";
+        String content = "2021년형 LG 노트북 입니다.";
         BigDecimal price = new BigDecimal("90000000");
-        String brandName = "삼성";
+        String brandName = "LG";
 
         LocalDateTime registeredAt = LocalDateTime.now();
-        LocalDateTime createdAt = LocalDateTime.now();
-        String createdBy = "Admin Server";
+        // LocalDateTime createdAt = LocalDateTime.now();
+        // String createdBy = "Admin Server";
 
         Long partnerId = 1L;
 
@@ -36,8 +37,8 @@ class ItemRepositoryTest extends StudyApplicationTests {
         item.setPrice(price);
         item.setBrandName(brandName);
         item.setRegisteredAt(registeredAt);
-        item.setCreatedAt(createdAt);
-        item.setCreatedBy(createdBy);
+        // item.setCreatedAt(createdAt);
+        // item.setCreatedBy(createdBy);
         // item.setPartnerId(partnerId);
 
         Item newItem = itemRepository.save(item);

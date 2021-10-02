@@ -1,5 +1,6 @@
 package com.example.study.model.entity;
 
+import com.example.study.component.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @Entity
 @ToString(exclude = {"orderDetailList", "partner"})
-public class Item {
+public class Item extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,14 +37,6 @@ public class Item {
     private LocalDateTime registeredAt;
 
     private LocalDateTime unregisteredAt;
-
-    private LocalDateTime createdAt;
-
-    private String createdBy;
-
-    private LocalDateTime updatedAt;
-
-    private String updatedBy;
 
     // Item 1:N OrderDetail
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")

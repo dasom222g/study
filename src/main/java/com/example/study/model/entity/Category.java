@@ -1,5 +1,6 @@
 package com.example.study.model.entity;
 
+import com.example.study.component.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @ToString(exclude = {"partnerList"})
-public class Category {
+public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,14 +20,6 @@ public class Category {
     private String type;
 
     private String title;
-
-    private LocalDateTime createdAt;
-
-    private String createdBy;
-
-    private LocalDateTime updatedAt;
-
-    private String updatedBy;
 
     // Category 1:N Partner
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")

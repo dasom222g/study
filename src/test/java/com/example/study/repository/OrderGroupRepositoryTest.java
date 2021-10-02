@@ -28,8 +28,8 @@ class OrderGroupRepositoryTest extends StudyApplicationTests {
         LocalDate orderAt = LocalDate.now().minusDays(2);
         LocalDate arrivalDate = LocalDate.now();
 
-        LocalDateTime createdAt = LocalDateTime.now();
-        String createdBy = "Admin Server";
+        // LocalDateTime createdAt = LocalDateTime.now();
+        // String createdBy = "Admin Server";
 
         Long userId = 1L;
 
@@ -43,8 +43,8 @@ class OrderGroupRepositoryTest extends StudyApplicationTests {
         orderGroup.setTotalQuantity(totalQuantity);
         orderGroup.setOrderAt(orderAt);
         orderGroup.setArrivalDate(arrivalDate);
-        orderGroup.setCreatedAt(createdAt);
-        orderGroup.setCreatedBy(createdBy);
+        // orderGroup.setCreatedAt(createdAt);
+        // orderGroup.setCreatedBy(createdBy);
         // orderGroup.setUserId(userId);
 
         OrderGroup newOrderGroup = orderGroupRepository.save(orderGroup);

@@ -19,24 +19,21 @@ class UserRepositoryTest extends StudyApplicationTests {
 
     @Test
     public void create() {
-        String account = "Test02";
-        String password = "Test02PW";
+        String account = "Test05";
+        String password = "Test05PW";
         String status = "REGISTERED";
-        String email = "Test02@gmail.com";
-        String phoneNumber = "010-1111-1111";
+        String email = "Test05@gmail.com";
+        String phoneNumber = "010-1111-5555";
         LocalDateTime registeredAt = LocalDateTime.now();
-        LocalDateTime createdAt = LocalDateTime.now();
-        String createdBy = "Admin Server";
 
-        User user = new User();
-        user.setAccount(account);
-        user.setPassword(password);
-        user.setStatus(status);
-        user.setEmail(email);
-        user.setPhoneNumber(phoneNumber);
-        user.setRegisteredAt(registeredAt);
-        user.setCreatedAt(createdAt);
-        user.setCreatedBy(createdBy);
+//        User user = new User();
+//        user.setAccount(account);
+//        user.setPassword(password);
+//        user.setStatus(status);
+//        user.setEmail(email);
+//        user.setPhoneNumber(phoneNumber);
+//        user.setRegisteredAt(registeredAt);
+        User user = User.builder().account(account).password(password).build();
 
         User newUser = userRepository.save(user);
         Assertions.assertNotNull(newUser);
@@ -74,6 +71,17 @@ class UserRepositoryTest extends StudyApplicationTests {
                     System.out.println("파트너사 카테고리: " + orderDetail.getItem().getPartner().getCategory().getTitle());
                 });
             });
+        });
+    }
+
+    @Test
+    public void update() {
+        Optional<User> findItem = userRepository.findByAccount("Auditor04");
+        findItem.ifPresent(item -> {
+            item.setAccount("Change04").setPassword("Change04PW").setEmail("Change04@gmail.com");
+
+            User updateUser = userRepository.save(item);
+            Assertions.assertNotNull((updateUser));
         });
     }
 }

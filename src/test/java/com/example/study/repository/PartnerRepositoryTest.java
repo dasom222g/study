@@ -26,10 +26,10 @@ class PartnerRepositoryTest extends StudyApplicationTests {
         String ceoName = "김다솜";
 
         LocalDateTime registeredAt = LocalDateTime.now();
-        LocalDateTime createdAt = LocalDateTime.now();
-        String createdBy = "Admin Server";
+        // LocalDateTime createdAt = LocalDateTime.now();
+        // String createdBy = "Admin Server";
 
-        Long categoryId = 1L;
+        // Long categoryId = 1L;
 
         Partner partner = new Partner();
         partner.setName(name);
@@ -40,8 +40,8 @@ class PartnerRepositoryTest extends StudyApplicationTests {
         partner.setBusinessNumber(businessNumber);
         partner.setCeoName(ceoName);
         partner.setRegisteredAt(registeredAt);
-        partner.setCreatedAt(createdAt);
-        partner.setCreatedBy(createdBy);
+        // partner.setCreatedAt(createdAt);
+        // partner.setCreatedBy(createdBy);
         // partner.setCategoryId(categoryId);
 
         Partner newPartner = partnerRepository.save(partner);
