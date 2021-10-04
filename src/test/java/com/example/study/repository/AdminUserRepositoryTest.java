@@ -16,8 +16,8 @@ class AdminUserRepositoryTest extends StudyApplicationTests {
 
     @Test
     public void create() {
-        String account = "AdminUser02";
-        String password = "AdminUser02PW";
+        String account = "Song123";
+        String password = "Song123PW";
         String status = "REGISTERED";
         String role = "Partner";
         // LocalDateTime createdAt = LocalDateTime.now();

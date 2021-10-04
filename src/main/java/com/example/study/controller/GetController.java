@@ -1,6 +1,7 @@
 package com.example.study.controller;
 
 import com.example.study.model.SearchParam;
+import com.example.study.model.network.Header;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api") // localhost:8080/api
+@RequestMapping("/api") // localhost:5000/api
 public class GetController {
     @RequestMapping(method = RequestMethod.GET, path = "/getMethod") // localhost:5000/api/getMethod
     public String getMethod() {
@@ -37,4 +38,10 @@ public class GetController {
         // { id: "1234", password: "abcd", email: "dasom228@gmail.com", page: 10}
         return searchParam;
     }
+
+    @GetMapping("/header") // localhost:5000/api/header
+    public Header getHeader() {
+        return Header.builder().responseCode("OK").description("OK").build();
+    }
+
 }
