@@ -2,25 +2,43 @@ package com.example.study.controller.api;
 
 import com.example.study.ifs.CRUDInterface;
 import com.example.study.model.network.Header;
+import com.example.study.model.network.request.UserApiRequest;
+import com.example.study.model.network.response.UserApiResponse;
+import com.example.study.service.UserApiService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-public class UserApiController implements CRUDInterface {
+@Slf4j
+@RestController
+@RequestMapping("api/user")
+public class UserApiController implements CRUDInterface<UserApiRequest, UserApiResponse> {
+    @Autowired
+    UserApiService userApiService;
+
     @Override
-    public Header create() {
+    @PostMapping("") // api/user
+    public Header create(@RequestBody Header<UserApiRequest> request) {
+        log.info("{}", request);
+        return userApiService.create(request);
+    }
+
+    @Override
+    @GetMapping("{id}") // api/user/{id}
+    public Header<UserApiResponse> read(@PathVariable Long id) {
+        log.info("read: {}", id);
+        return userApiService.read(id);
+    }
+
+    @Override
+    @PutMapping("") // api/user
+    public Header<UserApiResponse> update(@RequestBody Header<UserApiRequest> request) {
         return null;
     }
 
     @Override
-    public Header read(Long id) {
-        return null;
-    }
-
-    @Override
-    public Header update() {
-        return null;
-    }
-
-    @Override
-    public Header delete(Long id) {
+    @DeleteMapping("{id}") // api/user/{id}
+    public Header delete(@PathVariable Long id) {
         return null;
     }
 }
