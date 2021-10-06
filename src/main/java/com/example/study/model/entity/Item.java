@@ -1,10 +1,8 @@
 package com.example.study.model.entity;
 
 import com.example.study.component.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -17,6 +15,8 @@ import java.util.List;
 @Data
 @Entity
 @ToString(exclude = {"orderDetailList", "partner"})
+@Builder
+@Accessors(chain = true)
 public class Item extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

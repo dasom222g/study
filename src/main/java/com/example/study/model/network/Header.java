@@ -1,6 +1,5 @@
 package com.example.study.model.network;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +24,7 @@ public class Header<T> {
     private T data;
 
     // OK (data 없는 Header)
+    @SuppressWarnings("unchecked")
     public static <T> Header<T> OK() {
         return (Header<T>) Header.builder()
                 .transactionTime(LocalDateTime.now())
@@ -34,6 +34,7 @@ public class Header<T> {
     }
 
     // OK (data 받아서 추가하는 Header)
+    @SuppressWarnings("unchecked")
     public static <T> Header<T> OK(T data) {
         return (Header<T>) Header.builder()
                 .transactionTime(LocalDateTime.now())
@@ -44,6 +45,7 @@ public class Header<T> {
     }
 
     // Error
+    @SuppressWarnings("unchecked")
     public static <T> Header<T> ERROR(String description) {
         return (Header<T>) Header.builder()
                 .transactionTime(LocalDateTime.now())

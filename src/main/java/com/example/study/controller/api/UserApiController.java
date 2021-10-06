@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/user")
 public class UserApiController implements CRUDInterface<UserApiRequest, UserApiResponse> {
     @Autowired
-    UserApiService userApiService;
+    private UserApiService userApiService;
 
     @Override
     @PostMapping("") // api/user
@@ -33,12 +33,12 @@ public class UserApiController implements CRUDInterface<UserApiRequest, UserApiR
     @Override
     @PutMapping("") // api/user
     public Header<UserApiResponse> update(@RequestBody Header<UserApiRequest> request) {
-        return null;
+        return userApiService.update(request);
     }
 
     @Override
     @DeleteMapping("{id}") // api/user/{id}
     public Header delete(@PathVariable Long id) {
-        return null;
+        return userApiService.delete(id);
     }
 }

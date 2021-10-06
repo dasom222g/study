@@ -16,15 +16,16 @@ import java.util.Optional;
 public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResponse> {
     @Autowired
     private UserRepository userRepository;
-    /*
-    todo
-    1. request data 가져오기
-    2. user 생성
-    3. response data return
-     */
 
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
+        /*
+        todo
+        1. request data 가져오기
+        2. user 생성
+        3. response data return
+         */
+
         // request data 가져오기
         UserApiRequest userApiRequest = request.getData();
 
@@ -38,6 +39,7 @@ public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResp
                 .registeredAt(LocalDateTime.now())
                 .build();
         User newUser = userRepository.save(user);
+        // response data return
         return response(newUser);
     }
 
@@ -45,17 +47,59 @@ public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResp
     public Header<UserApiResponse> read(Long id) {
         // 받은 id로 response 형태의 객체 리턴하거나 잘못된 id로 객체가 없을경우 error 메세지 리턴
         Optional<User> findUser = userRepository.findById(id);
-        return findUser.map(user -> response(user)).orElseGet(() -> Header.ERROR("데이터 없음"));
+        return findUser.map(user -> response(user))
+                        .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header<UserApiResponse> update(Header<UserApiRequest> request) {
-        return null;
+        /*
+        todo
+        1. 수정할 request data 가져오기
+        2. data의 id로 해당 객체 가져오기
+        3. 객체 set 해서 update 하기
+        4. response data return
+         */
+
+        // request data 가져오기
+        UserApiRequest userApiRequest = request.getData();
+
+        // data의 id로 해당 객체 가져오기
+        Optional<User> user = userRepository.findById(userApiRequest.getId());
+        // 각 map함수 안에서 데이터가 없거나 오류가 날 경우 orElseGet 함수로 감
+        return user.map(item -> {
+            // 객체 set 하여 리턴
+            item.setAccount(userApiRequest.getAccount())
+                    .setPassword(userApiRequest.getPassword())
+                    .setStatus(userApiRequest.getStatus())
+                    .setEmail(userApiRequest.getEmail())
+                    .setPhoneNumber(userApiRequest.getPhoneNumber())
+                    .setRegisteredAt(userApiRequest.getRegisteredAt())
+                    .setUnregisteredAt(userApiRequest.getUnregisteredAt());
+            return item;
+        })
+        // 수정된 객체 update 후 잘 저장되면 update 되어 저장된 객체 반환
+        .map(item -> userRepository.save(item))
+        // update 되어 저장된 객체로 response data 만들어서 return
+        .map(updatedItem -> response(updatedItem))
+        .orElseGet(() -> Header.ERROR("데이터 없음"));
+
     }
 
     @Override
     public Header delete(Long id) {
-        return null;
+        /*
+        todo
+        1. id 파라메터로 삭제할 객체 가져오기
+        2. 객체 삭제하기
+        3. ok 메세지 리턴
+         */
+        Optional<User> user = userRepository.findById(id);
+        return user.map(item -> {
+            userRepository.delete(item);
+            return Header.OK();
+        })
+        .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     private Header<UserApiResponse> response(User user) {
