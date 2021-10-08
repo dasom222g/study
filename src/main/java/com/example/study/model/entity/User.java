@@ -1,6 +1,7 @@
 package com.example.study.model.entity;
 
 import com.example.study.component.BaseEntity;
+import com.example.study.model.enumclass.UserStatus;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
@@ -18,7 +19,6 @@ import java.util.List;
 @Data
 @Entity
 @ToString(exclude = {"orderGroupList"})
-//@EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain = true)
 public class User extends BaseEntity {
@@ -30,7 +30,8 @@ public class User extends BaseEntity {
 
     private String password;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status; // REGISTERED , UNREGISTERED
 
     private String email;
 

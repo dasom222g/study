@@ -16,6 +16,9 @@ class OrderGroupRepositoryTest extends StudyApplicationTests {
     @Autowired
     OrderGroupRepository orderGroupRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Test
     public void create() {
         String status = "COMPLETE";
@@ -31,7 +34,7 @@ class OrderGroupRepositoryTest extends StudyApplicationTests {
         // LocalDateTime createdAt = LocalDateTime.now();
         // String createdBy = "Admin Server";
 
-        Long userId = 1L;
+        Long userId = 3L;
 
         OrderGroup orderGroup = new OrderGroup();
         orderGroup.setStatus(status);
@@ -45,7 +48,7 @@ class OrderGroupRepositoryTest extends StudyApplicationTests {
         orderGroup.setArrivalDate(arrivalDate);
         // orderGroup.setCreatedAt(createdAt);
         // orderGroup.setCreatedBy(createdBy);
-        // orderGroup.setUserId(userId);
+         orderGroup.setUser(userRepository.getById(userId));
 
         OrderGroup newOrderGroup = orderGroupRepository.save(orderGroup);
         Assertions.assertNotNull(newOrderGroup);

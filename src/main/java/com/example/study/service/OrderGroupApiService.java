@@ -42,17 +42,39 @@ public class OrderGroupApiService implements CRUDInterface<OrderGroupRequest, Or
     @Override
     public Header<OrderGroupResponse> read(Long id) {
         Optional<OrderGroup> findOrderGroup = orderGroupRepository.findById(id);
-        return findOrderGroup.map(this::response).orElseGet(() -> Header.ERROR("데이터 없음"));
+        System.out.println("findOrderGroup=====> " + orderGroupRepository.findById(1L));
+        return findOrderGroup.map(item -> response(item)).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header<OrderGroupResponse> update(Header<OrderGroupRequest> request) {
-        return null;
+        OrderGroupRequest requestBody = request.getData();
+        Optional<OrderGroup> findItem = orderGroupRepository.findById(requestBody.getId());
+        return findItem.map(item -> {
+            item.setStatus(requestBody.getStatus())
+                    .setOrderType(requestBody.getOrderType())
+                    .setRevAddress(requestBody.getRevAddress())
+                    .setRevName(requestBody.getRevName())
+                    .setPaymentType(requestBody.getPaymentType())
+                    .setTotalPrice(requestBody.getTotalPrice())
+                    .setTotalQuantity(requestBody.getTotalQuantity())
+                    .setOrderAt(requestBody.getOrderAt())
+                    .setArrivalDate(requestBody.getArrivalDate())
+                    .setUser(userRepository.getById(requestBody.getUserId()));
+            return item;
+        })
+        .map(item -> orderGroupRepository.save(item))
+        .map(updatedItem -> response(updatedItem))
+        .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header delete(Long id) {
-        return null;
+        Optional<OrderGroup> findItem = orderGroupRepository.findById(id);
+        return findItem.map(item -> {
+            orderGroupRepository.delete(item);
+            return Header.OK();
+        }).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     private Header<OrderGroupResponse> response(OrderGroup orderGroup) {
