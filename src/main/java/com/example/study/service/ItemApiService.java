@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ItemApiService implements CRUDInterface<ItemApiRequest, ItemApiResponse> {
-    @Autowired
-    private ItemRepository itemRepository;
+public class ItemApiService extends BaseApiService<ItemApiRequest, ItemApiResponse, Item> {
+   /*
+    BaseApiService 에서 생성됨
+   @Autowired
+   private ItemRepository itemRepository;
+    */
 
     @Autowired
     private PartnerRepository partnerRepository;
@@ -32,20 +35,20 @@ public class ItemApiService implements CRUDInterface<ItemApiRequest, ItemApiResp
                 .brandName(ItemApiRequest.getBrandName())
                 .partner(partnerRepository.getById(ItemApiRequest.getPartnerId()))
                 .build();
-        Item newItem = itemRepository.save(item);
+        Item newItem = baseRepository.save(item);
         return response(newItem);
     }
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
-        Optional<Item> findItem = itemRepository.findById(id);
+        Optional<Item> findItem = baseRepository.findById(id);
         return  findItem.map(item -> response(item)).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header<ItemApiResponse> update(Header<ItemApiRequest> request) {
         ItemApiRequest itemApiRequest = request.getData();
-        Optional<Item> findItem = itemRepository.findById(itemApiRequest.getId());
+        Optional<Item> findItem = baseRepository.findById(itemApiRequest.getId());
         return findItem.map(item -> {
             item.setStatus(itemApiRequest.getStatus())
                     .setName(itemApiRequest.getName())
@@ -56,25 +59,27 @@ public class ItemApiService implements CRUDInterface<ItemApiRequest, ItemApiResp
                     .setPartner(partnerRepository.getById(itemApiRequest.getPartnerId()));
             return item;
         })
-        .map(setItem -> itemRepository.save(setItem))
+        .map(setItem -> baseRepository.save(setItem))
         .map(updatedItem -> response(updatedItem))
         .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header delete(Long id) {
-        Optional<Item> findItem = itemRepository.findById(id);
+        Optional<Item> findItem = baseRepository.findById(id);
         return findItem.map(item -> {
-            itemRepository.delete(item);
+            baseRepository.delete(item);
             return Header.OK();
         })
         .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     private Header<ItemApiResponse> response(Item item) {
+        String statusTitle = item.getStatus().getTitle();
         ItemApiResponse itemApiResponse = ItemApiResponse.builder()
                 .id(item.getId())
                 .status(item.getStatus())
+                .statusTitle(statusTitle)
                 .name(item.getName())
                 .title(item.getTitle())
                 .content(item.getContent())

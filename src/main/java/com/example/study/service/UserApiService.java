@@ -2,7 +2,7 @@ package com.example.study.service;
 
 import com.example.study.ifs.CRUDInterface;
 import com.example.study.model.entity.User;
-import com.example.study.model.enumclass.UserStatus;
+import com.example.study.model.enumclass.Status;
 import com.example.study.model.network.Header;
 import com.example.study.model.network.request.UserApiRequest;
 import com.example.study.model.network.response.UserApiResponse;
@@ -14,9 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResponse> {
-    @Autowired
-    private UserRepository userRepository;
+public class UserApiService extends BaseApiService<UserApiRequest, UserApiResponse, User> {
 
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
@@ -34,12 +32,12 @@ public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResp
         User user = User.builder()
                 .account(userApiRequest.getAccount())
                 .password(userApiRequest.getPassword())
-                .status(UserStatus.REGISTERED)
+                .status(Status.REGISTERED)
                 .email(userApiRequest.getEmail())
                 .phoneNumber(userApiRequest.getPhoneNumber())
                 .registeredAt(LocalDateTime.now())
                 .build();
-        User newUser = userRepository.save(user);
+        User newUser = baseRepository.save(user);
         // response data return
         return response(newUser);
     }
@@ -47,7 +45,7 @@ public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResp
     @Override
     public Header<UserApiResponse> read(Long id) {
         // 받은 id로 response 형태의 객체 리턴하거나 잘못된 id로 객체가 없을경우 error 메세지 리턴
-        Optional<User> findUser = userRepository.findById(id);
+        Optional<User> findUser = baseRepository.findById(id);
         return findUser.map(user -> response(user))
                         .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
@@ -66,7 +64,7 @@ public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResp
         UserApiRequest userApiRequest = request.getData();
 
         // data의 id로 해당 객체 가져오기
-        Optional<User> user = userRepository.findById(userApiRequest.getId());
+        Optional<User> user = baseRepository.findById(userApiRequest.getId());
         // 각 map함수 안에서 데이터가 없거나 오류가 날 경우 orElseGet 함수로 감
         return user.map(item -> {
             // 객체 set 하여 리턴
@@ -80,7 +78,7 @@ public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResp
             return item;
         })
         // 수정된 객체 update 후 잘 저장되면 update 되어 저장된 객체 반환
-        .map(item -> userRepository.save(item))
+        .map(item -> baseRepository.save(item))
         // update 되어 저장된 객체로 response data 만들어서 return
         .map(updatedItem -> response(updatedItem))
         .orElseGet(() -> Header.ERROR("데이터 없음"));
@@ -95,9 +93,9 @@ public class UserApiService implements CRUDInterface<UserApiRequest, UserApiResp
         2. 객체 삭제하기
         3. ok 메세지 리턴
          */
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = baseRepository.findById(id);
         return user.map(item -> {
-            userRepository.delete(item);
+            baseRepository.delete(item);
             return Header.OK();
         })
         .orElseGet(() -> Header.ERROR("데이터 없음"));

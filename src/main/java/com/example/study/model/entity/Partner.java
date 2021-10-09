@@ -1,10 +1,9 @@
 package com.example.study.model.entity;
 
 import com.example.study.component.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.example.study.model.enumclass.Status;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +14,8 @@ import java.util.List;
 @Data
 @Entity
 @ToString(exclude = {"itemList", "category"})
+@Builder
+@Accessors(chain = true)
 public class Partner extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,8 @@ public class Partner extends BaseEntity {
 
     private String name;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     private String address;
 

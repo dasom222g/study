@@ -1,7 +1,7 @@
 package com.example.study.model.entity;
 
 import com.example.study.component.BaseEntity;
-import com.example.study.model.enumclass.UserStatus;
+import com.example.study.model.enumclass.Status;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
@@ -31,7 +31,7 @@ public class User extends BaseEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus status; // REGISTERED , UNREGISTERED
+    private Status status; // REGISTERED , UNREGISTERED
 
     private String email;
 

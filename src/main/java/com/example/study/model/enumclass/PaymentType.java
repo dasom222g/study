@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum UserStatus {
-    REGISTERED(0, "등록", "사용자 등록상태"),
-    UNREGISTERED(1, "해지", "사용자 해지상태");
+public enum PaymentType {
+    CARD(0, "카드 결제", "카드로 결제"),
+    CASH(1, "현금 결제", "현금으로 결제");
 
     private int id;
     private String title;

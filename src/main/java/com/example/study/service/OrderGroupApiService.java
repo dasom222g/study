@@ -1,11 +1,9 @@
 package com.example.study.service;
 
-import com.example.study.ifs.CRUDInterface;
 import com.example.study.model.entity.OrderGroup;
 import com.example.study.model.network.Header;
-import com.example.study.model.network.request.OrderGroupRequest;
-import com.example.study.model.network.response.OrderGroupResponse;
-import com.example.study.repository.OrderGroupRepository;
+import com.example.study.model.network.request.OrderGroupApiRequest;
+import com.example.study.model.network.response.OrderGroupApiResponse;
 import com.example.study.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,16 +11,14 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class OrderGroupApiService implements CRUDInterface<OrderGroupRequest, OrderGroupResponse> {
-    @Autowired
-    private OrderGroupRepository orderGroupRepository;
+public class OrderGroupApiService extends BaseApiService<OrderGroupApiRequest, OrderGroupApiResponse, OrderGroup> {
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public Header<OrderGroupResponse> create(Header<OrderGroupRequest> request) {
-        OrderGroupRequest requestBody = request.getData();
+    public Header<OrderGroupApiResponse> create(Header<OrderGroupApiRequest> request) {
+        OrderGroupApiRequest requestBody = request.getData();
         OrderGroup orderGroup = OrderGroup.builder()
                 .status(requestBody.getStatus())
                 .orderType(requestBody.getOrderType())
@@ -35,21 +31,20 @@ public class OrderGroupApiService implements CRUDInterface<OrderGroupRequest, Or
                 .arrivalDate(requestBody.getArrivalDate())
                 .user(userRepository.getById(requestBody.getUserId()))
                 .build();
-        OrderGroup newOrderGroup = orderGroupRepository.save(orderGroup);
+        OrderGroup newOrderGroup = baseRepository.save(orderGroup);
         return response(newOrderGroup);
     }
 
     @Override
-    public Header<OrderGroupResponse> read(Long id) {
-        Optional<OrderGroup> findOrderGroup = orderGroupRepository.findById(id);
-        System.out.println("findOrderGroup=====> " + orderGroupRepository.findById(1L));
+    public Header<OrderGroupApiResponse> read(Long id) {
+        Optional<OrderGroup> findOrderGroup = baseRepository.findById(id);
         return findOrderGroup.map(item -> response(item)).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
-    public Header<OrderGroupResponse> update(Header<OrderGroupRequest> request) {
-        OrderGroupRequest requestBody = request.getData();
-        Optional<OrderGroup> findItem = orderGroupRepository.findById(requestBody.getId());
+    public Header<OrderGroupApiResponse> update(Header<OrderGroupApiRequest> request) {
+        OrderGroupApiRequest requestBody = request.getData();
+        Optional<OrderGroup> findItem = baseRepository.findById(requestBody.getId());
         return findItem.map(item -> {
             item.setStatus(requestBody.getStatus())
                     .setOrderType(requestBody.getOrderType())
@@ -63,22 +58,22 @@ public class OrderGroupApiService implements CRUDInterface<OrderGroupRequest, Or
                     .setUser(userRepository.getById(requestBody.getUserId()));
             return item;
         })
-        .map(item -> orderGroupRepository.save(item))
+        .map(item -> baseRepository.save(item))
         .map(updatedItem -> response(updatedItem))
         .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header delete(Long id) {
-        Optional<OrderGroup> findItem = orderGroupRepository.findById(id);
+        Optional<OrderGroup> findItem = baseRepository.findById(id);
         return findItem.map(item -> {
-            orderGroupRepository.delete(item);
+            baseRepository.delete(item);
             return Header.OK();
         }).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private Header<OrderGroupResponse> response(OrderGroup orderGroup) {
-        OrderGroupResponse orderGroupResponse = OrderGroupResponse.builder()
+    private Header<OrderGroupApiResponse> response(OrderGroup orderGroup) {
+        OrderGroupApiResponse orderGroupResponse = OrderGroupApiResponse.builder()
                 .id(orderGroup.getId())
                 .status(orderGroup.getStatus())
                 .orderType(orderGroup.getOrderType())

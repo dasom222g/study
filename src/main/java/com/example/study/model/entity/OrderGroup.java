@@ -1,6 +1,10 @@
 package com.example.study.model.entity;
 
 import com.example.study.component.BaseEntity;
+import com.example.study.model.enumclass.OrderStatus;
+import com.example.study.model.enumclass.OrderType;
+import com.example.study.model.enumclass.PaymentType;
+import com.example.study.model.enumclass.Status;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -22,15 +26,18 @@ public class OrderGroup extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
-    private String orderType;
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType; // ALL/EACH
 
     private String revAddress;
 
     private String revName;
 
-    private String paymentType;
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType; // CARD/CASH
 
     private BigDecimal totalPrice;
 

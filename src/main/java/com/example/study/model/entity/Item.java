@@ -1,6 +1,7 @@
 package com.example.study.model.entity;
 
 import com.example.study.component.BaseEntity;
+import com.example.study.model.enumclass.Status;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -21,8 +22,8 @@ public class Item extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     private String name;
 

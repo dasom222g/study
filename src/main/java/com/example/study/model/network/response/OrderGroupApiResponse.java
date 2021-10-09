@@ -1,5 +1,9 @@
-package com.example.study.model.network.request;
+package com.example.study.model.network.response;
 
+import com.example.study.model.enumclass.OrderStatus;
+import com.example.study.model.enumclass.OrderType;
+import com.example.study.model.enumclass.PaymentType;
+import com.example.study.model.enumclass.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,18 +16,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 @Builder
-public class OrderGroupRequest {
+public class OrderGroupApiResponse {
     private Long id;
 
-    private String status;
+    private OrderStatus status; // PENDING, COMPLETE, CANCEL
 
-    private String orderType;
+    private OrderType orderType;
 
     private String revAddress;
 
     private String revName;
 
-    private String paymentType;
+    private PaymentType paymentType;
 
     private BigDecimal totalPrice;
 

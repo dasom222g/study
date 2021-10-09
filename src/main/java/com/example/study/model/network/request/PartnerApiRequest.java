@@ -1,4 +1,4 @@
-package com.example.study.model.network.response;
+package com.example.study.model.network.request;
 
 import com.example.study.model.enumclass.Status;
 import lombok.AllArgsConstructor;
@@ -8,24 +8,30 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
-public class UserApiResponse {
-    private  Long id;
+public class PartnerApiRequest {
+    private Long id;
 
-    private String account;
-
-    private String password;
+    private String name;
 
     private Status status;
 
-    private String email;
+    private String address;
 
-    private String phoneNumber;
+    private String callCenter;
+
+    private String partnerNumber;
+
+    private String businessNumber;
+
+    private String ceoName;
 
     private LocalDateTime registeredAt;
 
     private LocalDateTime unregisteredAt;
+
+    private Long categoryId;
 }
