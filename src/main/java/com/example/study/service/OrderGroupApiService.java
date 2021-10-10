@@ -6,9 +6,13 @@ import com.example.study.model.network.request.OrderGroupApiRequest;
 import com.example.study.model.network.response.OrderGroupApiResponse;
 import com.example.study.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderGroupApiService extends BaseApiService<OrderGroupApiRequest, OrderGroupApiResponse, OrderGroup> {
@@ -32,13 +36,15 @@ public class OrderGroupApiService extends BaseApiService<OrderGroupApiRequest, O
                 .user(userRepository.getById(requestBody.getUserId()))
                 .build();
         OrderGroup newOrderGroup = baseRepository.save(orderGroup);
-        return response(newOrderGroup);
+        return Header.OK(response(newOrderGroup));
     }
 
     @Override
     public Header<OrderGroupApiResponse> read(Long id) {
         Optional<OrderGroup> findOrderGroup = baseRepository.findById(id);
-        return findOrderGroup.map(item -> response(item)).orElseGet(() -> Header.ERROR("데이터 없음"));
+        return findOrderGroup.map(item -> response(item))
+                .map(Header::OK)
+                .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
@@ -60,6 +66,7 @@ public class OrderGroupApiService extends BaseApiService<OrderGroupApiRequest, O
         })
         .map(item -> baseRepository.save(item))
         .map(updatedItem -> response(updatedItem))
+        .map(Header::OK)
         .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -72,7 +79,7 @@ public class OrderGroupApiService extends BaseApiService<OrderGroupApiRequest, O
         }).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private Header<OrderGroupApiResponse> response(OrderGroup orderGroup) {
+    public OrderGroupApiResponse response(OrderGroup orderGroup) {
         OrderGroupApiResponse orderGroupResponse = OrderGroupApiResponse.builder()
                 .id(orderGroup.getId())
                 .status(orderGroup.getStatus())
@@ -86,6 +93,15 @@ public class OrderGroupApiService extends BaseApiService<OrderGroupApiRequest, O
                 .arrivalDate(orderGroup.getArrivalDate())
                 .userId(orderGroup.getUser().getId())
                 .build();
-        return Header.OK(orderGroupResponse);
+        return orderGroupResponse;
+    }
+
+    @Override
+    public Header<List<OrderGroupApiResponse>> search(Pageable pageable) {
+        Page<OrderGroup> orderGroups = baseRepository.findAll(pageable);
+        List<OrderGroupApiResponse> orderGroupApiResponseList = orderGroups.stream()
+                .map(this::response)
+                .collect(Collectors.toList());
+        return null;
     }
 }

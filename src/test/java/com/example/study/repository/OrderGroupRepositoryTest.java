@@ -2,15 +2,16 @@ package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.OrderGroup;
+import com.example.study.model.enumclass.OrderStatus;
+import com.example.study.model.enumclass.OrderType;
+import com.example.study.model.enumclass.PaymentType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class OrderGroupRepositoryTest extends StudyApplicationTests {
     @Autowired
@@ -21,11 +22,11 @@ class OrderGroupRepositoryTest extends StudyApplicationTests {
 
     @Test
     public void create() {
-        String status = "COMPLETE";
-        String orderType = "All";
+        OrderStatus status = OrderStatus.COMPLETE;
+        OrderType orderType = OrderType.ALL;
         String revAddress = "서울시 강남구";
         String revName = "김다솜";
-        String paymentType = "CARD";
+        PaymentType paymentType = PaymentType.CARD;
         BigDecimal totalPrice = BigDecimal.valueOf(900000);
         int totalQuantity = 5;
         LocalDate orderAt = LocalDate.now().minusDays(2);

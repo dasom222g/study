@@ -2,6 +2,7 @@ package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.OrderDetail;
+import com.example.study.model.enumclass.OrderStatus;
 import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class OrderDetailRepositoryTest extends StudyApplicationTests {
 
     @Test
     public void create() {
-        String status = "WAITING";
+        OrderStatus status = OrderStatus.ORDERING;
         LocalDate arrivalDate = LocalDate.now().plusDays(2);
         int quantity = 1;
         BigDecimal totalPrice = BigDecimal.valueOf(900000);
@@ -46,11 +47,12 @@ class OrderDetailRepositoryTest extends StudyApplicationTests {
     @Test
     public void update() {
         LocalDate arrivalDate = LocalDate.now().plusDays(2);
+        OrderStatus status = OrderStatus.ORDERING;
 
         Optional<OrderDetail> findOrderDetail = orderDetailRepository.findById(1L);
         findOrderDetail.ifPresent(item -> {
             System.out.println("값이 있습니다" + item);
-            item.setStatus("WAITING");
+            item.setStatus(status);
             // item.setUpdatedAt(LocalDateTime.now());
             // item.setUpdatedBy("Admin Server");
 

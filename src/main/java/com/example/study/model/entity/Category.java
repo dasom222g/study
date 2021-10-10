@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @ToString(exclude = {"partnerList"})
+@Builder
 public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

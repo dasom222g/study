@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,4 +29,7 @@ public class UserApiResponse {
     private LocalDateTime registeredAt;
 
     private LocalDateTime unregisteredAt;
+
+    // 연관 데이터 추가
+    private List<OrderGroupApiResponse> orderGroupList;
 }

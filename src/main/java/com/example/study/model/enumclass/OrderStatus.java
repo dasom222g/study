@@ -6,9 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum OrderStatus {
-    PENDING(0, "배송 대기", "주문 배송 대기"),
-    COMPLETE(1, "배송 완료", "주문 배송 완료"),
-    CANCEL(2, "주문 취소", "주문 취소 상태");
+    ORDERING(0, "주문 대기", "주문 대기"),
+    COMPLETE(1, "주문 완료", "주문 주문 완료"),
+    CONFIRM(2, "배송 완료", "배송 완료 상태");
 
     private int id;
     private String title;

@@ -8,9 +8,13 @@ import com.example.study.model.network.response.ItemApiResponse;
 import com.example.study.repository.ItemRepository;
 import com.example.study.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemApiService extends BaseApiService<ItemApiRequest, ItemApiResponse, Item> {
@@ -36,13 +40,15 @@ public class ItemApiService extends BaseApiService<ItemApiRequest, ItemApiRespon
                 .partner(partnerRepository.getById(ItemApiRequest.getPartnerId()))
                 .build();
         Item newItem = baseRepository.save(item);
-        return response(newItem);
+        return Header.OK(response(newItem));
     }
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
         Optional<Item> findItem = baseRepository.findById(id);
-        return  findItem.map(item -> response(item)).orElseGet(() -> Header.ERROR("데이터 없음"));
+        return  findItem.map(item -> response(item))
+                .map(Header::OK)
+                .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
@@ -61,6 +67,7 @@ public class ItemApiService extends BaseApiService<ItemApiRequest, ItemApiRespon
         })
         .map(setItem -> baseRepository.save(setItem))
         .map(updatedItem -> response(updatedItem))
+        .map(Header::OK)
         .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -74,7 +81,7 @@ public class ItemApiService extends BaseApiService<ItemApiRequest, ItemApiRespon
         .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private Header<ItemApiResponse> response(Item item) {
+    public ItemApiResponse response(Item item) {
         String statusTitle = item.getStatus().getTitle();
         ItemApiResponse itemApiResponse = ItemApiResponse.builder()
                 .id(item.getId())
@@ -89,6 +96,14 @@ public class ItemApiService extends BaseApiService<ItemApiRequest, ItemApiRespon
                 .registeredAt(item.getRegisteredAt())
                 .unregisteredAt(item.getUnregisteredAt())
                 .build();
-        return Header.OK(itemApiResponse);
+        return itemApiResponse;
+    }
+
+    @Override
+    public Header<List<ItemApiResponse>> search(Pageable pageable) {
+        Page<Item> items = baseRepository.findAll(pageable);
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .map(this::response).collect(Collectors.toList());
+        return Header.OK(itemApiResponseList);
     }
 }

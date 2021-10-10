@@ -32,7 +32,7 @@ dependencies {
     // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 
     // thymeleaf 의존성
-    // implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 test {

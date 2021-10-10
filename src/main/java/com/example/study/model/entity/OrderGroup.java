@@ -27,7 +27,7 @@ public class OrderGroup extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status; // ORDERING/COMPLETE/CONFIRM
 
     @Enumerated(EnumType.STRING)
     private OrderType orderType; // ALL/EACH

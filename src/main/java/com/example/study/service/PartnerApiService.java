@@ -1,15 +1,21 @@
 package com.example.study.service;
 
 import com.example.study.model.entity.Partner;
+import com.example.study.model.entity.User;
 import com.example.study.model.network.Header;
 import com.example.study.model.network.request.PartnerApiRequest;
 import com.example.study.model.network.response.PartnerApiResponse;
+import com.example.study.model.network.response.UserApiResponse;
 import com.example.study.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PartnerApiService extends BaseApiService<PartnerApiRequest, PartnerApiResponse, Partner> {
@@ -31,13 +37,13 @@ public class PartnerApiService extends BaseApiService<PartnerApiRequest, Partner
                 .category(categoryRepository.getById(requestBody.getCategoryId()))
                 .build();
         Partner newPartner = baseRepository.save(partner);
-        return response(newPartner);
+        return Header.OK(response(newPartner));
     }
 
     @Override
     public Header<PartnerApiResponse> read(Long id) {
         Optional<Partner> findItem = baseRepository.findById(id);
-        return findItem.map(this::response).orElseGet(() -> Header.ERROR("데이터 없음"));
+        return findItem.map(this::response).map(Header::OK).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
@@ -59,6 +65,7 @@ public class PartnerApiService extends BaseApiService<PartnerApiRequest, Partner
         })
         .map(setItem -> baseRepository.save(setItem))
         .map(updatedItem -> response(updatedItem))
+        .map(Header::OK)
         .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -71,7 +78,7 @@ public class PartnerApiService extends BaseApiService<PartnerApiRequest, Partner
         }).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private Header<PartnerApiResponse> response(Partner partner) {
+    private PartnerApiResponse response(Partner partner) {
         PartnerApiResponse partnerApiResponse = PartnerApiResponse.builder()
                 .id(partner.getId())
                 .name(partner.getName())
@@ -85,6 +92,14 @@ public class PartnerApiService extends BaseApiService<PartnerApiRequest, Partner
                 .unregisteredAt(partner.getUnregisteredAt())
                 .categoryId(partner.getCategory().getId())
                 .build();
-        return Header.OK(partnerApiResponse);
+        return partnerApiResponse;
+    }
+
+    @Override
+    public Header<List<PartnerApiResponse>> search(Pageable pageable) {
+        Page<Partner> partners = baseRepository.findAll(pageable);
+        List<PartnerApiResponse> partnerApiResponsesList = partners.stream()
+                .map(this::response).collect(Collectors.toList());
+        return Header.OK(partnerApiResponsesList);
     }
 }

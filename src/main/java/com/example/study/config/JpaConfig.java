@@ -13,7 +13,7 @@ import java.util.Optional;
 public class JpaConfig {
     @Bean
     public AuditorAware<String> auditorProvider() {
-        return () -> Optional.of("Auto User"); // 람다식
+        return () -> Optional.of("Admin Server"); // 람다식
         // 익명함수
         /*
         return new AuditorAware<String>() {

@@ -1,10 +1,8 @@
 package com.example.study.model.entity;
 
 import com.example.study.component.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.example.study.model.enumclass.OrderStatus;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,12 +14,14 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @ToString(exclude = {"orderGroup", "item"})
+@Builder
 public class OrderDetail extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status; // ORDERING/COMPLETE/CONFIRM
 
     private LocalDate arrivalDate;
 
